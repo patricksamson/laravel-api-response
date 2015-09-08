@@ -1,0 +1,49 @@
+{
+    "name": "lykegenes/laravel-api-response",
+    "description": "A Laravel wrapper for thephpleague's Fractal package",
+    "keywords": [
+        "lykegenes",
+        "laravel-api-response",
+        "fractal",
+        "laravel",
+        "api"
+    ],
+    "homepage": "https://github.com/lykegenes/laravel-api-response",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Patrick Samson",
+            "email": "patricksamson236@gmail.com",
+            "homepage": "https://github.com/lykegenes",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.1",
+        "illuminate/http": "~5.1",
+        "illuminate/database": "~5.1",
+        "league/fractal": "^0.12.0",
+        "sofa/eloquence": "~5.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lykegenes\\ApiResponse\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lykegenes\\ApiResponse\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
