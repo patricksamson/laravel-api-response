@@ -17,6 +17,21 @@ Via Composer
 composer require lykegenes/laravel-api-response
 ```
 
+Then, add this to your Service Providers :
+``` php
+Lykegenes\ApiResponse\ServiceProvider::class,
+```
+
+...and this to your Aliases :
+``` php
+'ApiResponse' => Lykegenes\ApiResponse\Facades\ApiResponse::class,
+```
+
+Optionally, you can publish and edit the configuration file :
+``` bash
+php artisan vendor:publish --provider="Lykegenes\ApiResponse\ServiceProvider" --tag=config
+```
+
 ## Usage
 
 ``` php
