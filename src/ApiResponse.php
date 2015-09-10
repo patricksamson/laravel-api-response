@@ -15,13 +15,13 @@ class ApiResponse
 
     /**
      * The Request instance
-     * @var Illuminate\Http\Request
+     * @var \Illuminate\Http\Request
      */
     protected $request;
 
     /**
      * The Fractal Manager instance
-     * @var League\Fractal\Manager
+     * @var \League\Fractal\Manager
      */
     protected $fractal;
 
