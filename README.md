@@ -34,9 +34,17 @@ php artisan vendor:publish --provider="Lykegenes\ApiResponse\ServiceProvider" --
 
 ## Usage
 
+The easiest way to use this package is to call the **make()** function from the facade.
+It will try to guess your input. For the transformers, see the docs from the Fractal package [here](http://fractal.thephpleague.com/transformers/).
 ``` php
-$skeleton = new Lykegenes\ApiResponse();
-echo $skeleton->echoPhrase('Hello, Lykegenes!');
+// You can use a class directly to return a paginated collection
+return ApiResponse::make(User::class, UserTransformer::class);
+
+// You can also use an Eloquent Query
+return ApiResponse::make(User::where('age', '<', '40'), UserTransformer::class);
+
+// This will return a single object
+return ApiResponse::make(User::findOrFail($id), UserTransformer::class);
 ```
 
 ## Testing
@@ -62,7 +70,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-downloads]: https://img.shields.io/packagist/dt/lykegenes/laravel-api-response.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/lykegenes/laravel-api-response
-[link-travis]: https://travis-ci.org/lykegenes/laravel-api-response
+[link-travis]: https://travis-ci.org/Lykegenes/laravel-api-response
 [link-scrutinizer]: https://scrutinizer-ci.com/g/lykegenes/laravel-api-response/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/lykegenes/laravel-api-response
 [link-downloads]: https://packagist.org/packages/lykegenes/laravel-api-response
