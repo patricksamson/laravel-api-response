@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection as EloquentCollection;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
@@ -81,6 +82,8 @@ class ApiResponse
             $data = $this->fromQuery($stuff, $transformer);
         } elseif (is_subclass_of($stuff, Model::class)) {
             $data = $this->fromModelClass($stuff, $transformer);
+        } elseif (is_subclass_of($stuff, EloquentCollection::class)) {
+            $data = $this->fromEloquentCollection($stuff, $transformer);
         } elseif (method_exists($stuff, 'toArray')) {
             $data = $stuff->toArray();
         } else {
@@ -151,6 +154,26 @@ class ApiResponse
         return $this->fractal->createData($resource)->toArray();
     }
 
+    public function fromEloquentCollection(EloquentCollection $collection, $transformer)
+    {
+        if ($this->sort != null) {
+            if ($this->order === 'asc') {
+                $collection = $collection->sortBy($this->sort);
+            } elseif ($this->order === 'desc') {
+                $collection = $collection->sortByDesc($this->sort);
+            }
+        }
+
+        // paginate the results
+        $collection = $collection->forPage($this->page, $this->perPage);
+
+        $this->resolveIncludes();
+
+        $resource = new Collection($collection, new $transformer);
+
+        return $this->fractal->createData($resource)->toArray();
+    }
+
     /**
      * Get the name of a request parameter from the user's configuration
      * @param  String $key This parameter's key
@@ -170,6 +193,13 @@ class ApiResponse
     private function getRequestParameterValue($key, $default = null)
     {
         return $this->request->input($this->getRequestParameterName($key), $default);
+    }
+
+    protected function resolveIncludes()
+    {
+        if ($this->include != null) {
+            $this->fractal->parseIncludes($this->include);
+        }
     }
 
 }
