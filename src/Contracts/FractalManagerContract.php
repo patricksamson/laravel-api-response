@@ -6,25 +6,27 @@ use Lykegenes\ApiResponse\ParamsBag;
 interface FractalManagerContract
 {
 
-	/**
-	 * Use Fractal to parse the Included relationships
-	 * 
-	 * @param  string $include
-	 * @return $this
-	 */
+    /**
+     * Use Fractal to parse the Included relationships
+     *
+     * @param  string $include
+     * @return $this
+     */
     public function includeRelated($include);
 
     /**
-     * Compile Fractal data to an Array
-     * 
+     * Compile this query into an Array using Fractal's Transformers
+     *
      * @return $this
      */
     public function compileFractalData();
 
-	/**
-	 * @param  ParamsBag
-	 * @return [type]
-	 */
+    /**
+     * Compile this query into an Array using Fractal's Transformers
+     *
+     * @param  ParamsBag
+     * @return [type]
+     */
     public function execute(ParamsBag $params);
 
 }

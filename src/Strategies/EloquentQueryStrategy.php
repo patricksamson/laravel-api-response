@@ -14,12 +14,14 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
 {
     /**
      * The Eloquent Query Builder instance
+     *
      * @var \Illuminate\Database\Eloquent\Builder
      */
     protected $query;
 
     /**
      * The paginator instance
+     *
      * @var \League\Fractal\Pagination\IlluminatePaginatorAdapter
      */
     protected $paginator;

@@ -19,6 +19,11 @@ abstract class AbstractCollectionStrategy implements CollectionStrategyContract
      */
     protected $fractal;
 
+    /**
+     * The Fractal Transformer instance
+     *
+     * @var \League\Fractal\TransformerAbstract
+     */
     protected $transformer;
 
     public function __construct(Manager $fractal, TransformerAbstract $transformer)
@@ -75,6 +80,12 @@ abstract class AbstractCollectionStrategy implements CollectionStrategyContract
      */
     abstract public function compileFractalData();
 
+    /**
+     * Compile this query into an Array using Fractal's Transformers
+     *
+     * @param ParamBag $params
+     * @return array
+     */
     public function execute(ParamsBag $params)
     {
         return $this->search($params->getSearchQuery())
