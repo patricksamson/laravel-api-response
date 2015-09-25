@@ -33,7 +33,7 @@ class ParamsBag
     /**
      * Parse the request parameters
      */
-    protected function parseParams()
+    private function parseParams()
     {
         $this->page          = $this->getParamValue('page', 1);
         $this->perPage       = $this->getParamValue('per_page', 10);
@@ -48,7 +48,7 @@ class ParamsBag
      * @param  String $key This parameter's key
      * @return String      This parameter's name
      */
-    protected function getParamName($key)
+    public function getParamName($key)
     {
         return config('api-response.parameters.' . $key, $key);
     }
@@ -59,7 +59,7 @@ class ParamsBag
      * @param  mixed $default The default value to return
      * @return mixed          This paramter's value
      */
-    protected function getParamValue($key, $default = null)
+    public function getParamValue($key, $default = null)
     {
         return $this->request->input($this->getParamName($key), $default);
     }
