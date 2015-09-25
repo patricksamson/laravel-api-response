@@ -8,13 +8,23 @@ use Lykegenes\ApiResponse\Strategies\ItemStrategy;
 class ItemStrategyTest extends ApiResponseTestCase
 {
 
+    /**
+     * @var \Lykegenes\ApiResponse\Strategies\ItemStrategy
+     */
     protected $itemStrategy;
+
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    protected $model;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->itemStrategy = new ItemStrategy($this->fractal, null, null);
+        $this->model = Mockery::mock(Illuminate\Database\Eloquent\Model::class);
+
+        $this->itemStrategy = new ItemStrategy($this->fractal, $this->transformer, $this->model);
     }
 
     /** @test */
