@@ -12,14 +12,15 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $configPath = __DIR__ . '/../config/config.php';
+
         $this->mergeConfigFrom($configPath, 'api-response');
-
-        /*$this->app->bindShared('datagrid-builder', function ($app) {
-
-    return new DatagridBuilder($app, $app['datagrid-helper']);
-    });*/
     }
 
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
     public function boot()
     {
         $configPath = __DIR__ . '/../config/config.php';
