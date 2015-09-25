@@ -11,8 +11,16 @@ use League\Fractal\Resource\Collection;
  */
 class EloquentQueryStrategy extends AbstractCollectionStrategy
 {
+    /**
+     * The Eloquent Query Builder instance
+     * @var \Illuminate\Database\Eloquent\Builder
+     */
     protected $query;
 
+    /**
+     * The paginator instance
+     * @var \League\Fractal\Pagination\IlluminatePaginatorAdapter
+     */
     protected $paginator;
 
     public function __construct(Manager $fractal, $transformer, Builder $query)
@@ -22,6 +30,12 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
         $this->query = $query;
     }
 
+    /**
+     * Adds a search condition to this Eloquent Query
+     *
+     * @param  string The search query
+     * @return $this
+     */
     public function search($search)
     {
         if ($search != null && method_exists($this->query, 'search')) {
@@ -31,6 +45,13 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
         return $this;
     }
 
+    /**
+     * Adds a OrderBy to the query
+     *
+     * @param  string
+     * @param  string
+     * @return $this
+     */
     public function orderBy($column, $order = 'asc')
     {
         if ($column != null) {
@@ -40,6 +61,12 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
         return $this;
     }
 
+    /**
+     * Include the selected relationships in the Fractal Transformer
+     *
+     * @param  string
+     * @return $this
+     */
     public function includeRelated($includes)
     {
         if ($includes != null) {
@@ -49,6 +76,13 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
         return $this;
     }
 
+    /**
+     * Paginate the results of this query
+     *
+     * @param  int
+     * @param  int
+     * @return $this
+     */
     public function paginate($perPage, $page)
     {
         if ($perPage > 0) {
@@ -58,11 +92,21 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
         return $this;
     }
 
+    /**
+     * Make a Fractal Collection from this query
+     *
+     * @return \League\Fractal\Resource\Collection
+     */
     public function getFractalCollection()
     {
         return new Collection($this->paginator->getCollection(), new $this->transformer);
     }
 
+    /**
+     * Compile this query into an Array using Fractal's Transformers
+     *
+     * @return array
+     */
     public function compileFractalData()
     {
         $resource = $this->getFractalCollection();

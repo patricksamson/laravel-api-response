@@ -11,6 +11,11 @@ use Lykegenes\ApiResponse\ParamsBag;
 abstract class AbstractCollectionStrategy implements CollectionStrategyContract
 {
 
+    /**
+     * The Fractal Manager instance
+     * 
+     * @var \League\Fractal\Manager
+     */
     protected $fractal;
 
     protected $transformer;
@@ -21,23 +26,53 @@ abstract class AbstractCollectionStrategy implements CollectionStrategyContract
         $this->transformer = $transformer;
     }
 
-    public function search($query)
-    {}
+    /**
+     * Adds a search condition to this Eloquent Query
+     *
+     * @param  string The search query
+     * @return $this
+     */
+    abstract public function search($query);
 
-    public function orderBy($column, $order)
-    {}
+    /**
+     * Adds a OrderBy to the query
+     *
+     * @param  string
+     * @param  string
+     * @return $this
+     */
+    abstract public function orderBy($column, $order);
 
-    public function includeRelated($includes)
-    {}
+    /**
+     * Include the selected relationships in the Fractal Transformer
+     *
+     * @param  string
+     * @return $this
+     */
+    abstract public function includeRelated($includes);
 
-    public function paginate($perPage, $page)
-    {}
+    /**
+     * Paginate the results of this query
+     *
+     * @param  int
+     * @param  int
+     * @return $this
+     */
+    abstract public function paginate($perPage, $page);
 
-    public function getFractalCollection()
-    {}
+    /**
+     * Make a Fractal Collection from this query
+     *
+     * @return \League\Fractal\Resource\Collection
+     */
+    abstract public function getFractalCollection();
 
-    public function compileFractalData()
-    {}
+    /**
+     * Compile this query into an Array using Fractal's Transformers
+     *
+     * @return array
+     */
+    abstract public function compileFractalData();
 
     public function execute(ParamsBag $params)
     {
