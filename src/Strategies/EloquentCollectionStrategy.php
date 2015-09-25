@@ -4,6 +4,7 @@ namespace Lykegenes\ApiResponse\Strategies;
 use Illuminate\Support\Collection as EloquentCollection;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection as FractalCollection;
+use League\Fractal\TransformerAbstract;
 
 /**
  *
@@ -12,7 +13,7 @@ class EloquentCollectionStrategy extends AbstractCollectionStrategy
 {
     protected $collection;
 
-    public function __construct(Manager $fractal, $transformer, EloquentCollection $collection)
+    public function __construct(Manager $fractal, TransformerAbstract $transformer, EloquentCollection $collection)
     {
         parent::__construct($fractal, $transformer);
 

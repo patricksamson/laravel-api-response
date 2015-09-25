@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use League\Fractal\TransformerAbstract;
 
 /**
  *
@@ -23,7 +24,7 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
      */
     protected $paginator;
 
-    public function __construct(Manager $fractal, $transformer, Builder $query)
+    public function __construct(Manager $fractal, TransformerAbstract $transformer, Builder $query)
     {
         parent::__construct($fractal, $transformer);
 
@@ -99,7 +100,7 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
      */
     public function getFractalCollection()
     {
-        return new Collection($this->paginator->getCollection(), new $this->transformer);
+        return new Collection($this->paginator->getCollection(), $this->transformer);
     }
 
     /**

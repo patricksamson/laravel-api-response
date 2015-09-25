@@ -3,6 +3,7 @@ namespace Lykegenes\ApiResponse\Strategies;
 
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
+use League\Fractal\TransformerAbstract;
 use Lykegenes\ApiResponse\Contracts\ItemStrategyContract;
 use Lykegenes\ApiResponse\ParamsBag;
 
@@ -18,7 +19,7 @@ class ItemStrategy implements ItemStrategyContract
 
     protected $model;
 
-    public function __construct(Manager $fractal, $transformer, $model)
+    public function __construct(Manager $fractal, TransformerAbstract $transformer, $model)
     {
         $this->fractal     = $fractal;
         $this->transformer = $transformer;

@@ -2,6 +2,7 @@
 namespace Lykegenes\ApiResponse\Strategies;
 
 use League\Fractal\Manager;
+use League\Fractal\TransformerAbstract;
 use Lykegenes\ApiResponse\Contracts\CollectionStrategyContract;
 use Lykegenes\ApiResponse\ParamsBag;
 
@@ -13,14 +14,14 @@ abstract class AbstractCollectionStrategy implements CollectionStrategyContract
 
     /**
      * The Fractal Manager instance
-     * 
+     *
      * @var \League\Fractal\Manager
      */
     protected $fractal;
 
     protected $transformer;
 
-    public function __construct(Manager $fractal, $transformer)
+    public function __construct(Manager $fractal, TransformerAbstract $transformer)
     {
         $this->fractal     = $fractal;
         $this->transformer = $transformer;
