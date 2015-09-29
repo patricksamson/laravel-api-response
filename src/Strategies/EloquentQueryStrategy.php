@@ -41,7 +41,8 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
      */
     public function search($search)
     {
-        if ($search != null && method_exists($this->query, 'search')) {
+        if ($search != null) {
+            // Will throw an error if the scope doesn't exist
             $this->query->search($search);
         }
 
