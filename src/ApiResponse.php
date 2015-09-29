@@ -5,19 +5,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection as EloquentCollection;
 use League\Fractal\Manager;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use League\Fractal\Resource\Collection;
-use League\Fractal\Resource\Item;
+use League\Fractal\TransformerAbstract;
+use Lykegenes\ApiResponse\Contracts\FractalManagerContract;
+use Lykegenes\ApiResponse\Strategies\EloquentCollectionStrategy;
+use Lykegenes\ApiResponse\Strategies\EloquentQueryStrategy;
+use Lykegenes\ApiResponse\Strategies\ItemStrategy;
+use Lykegenes\ApiResponse\Strategies\ModelClassStrategy;
 
 class ApiResponse
 {
-
-    /**
-     * The Request instance
-     * @var \Illuminate\Http\Request
-     */
-    protected $request;
 
     /**
      * The Fractal Manager instance
@@ -26,150 +24,62 @@ class ApiResponse
     protected $fractal;
 
     /**
-     * Various request parameters
-     * @var String
+     * The current request parameters
+     * @var ParamsBag
      */
-    protected $page;
-    protected $perPage;
-    protected $sort;
-    protected $order;
-    protected $search;
-    protected $include;
+    protected $paramsBag;
 
     /**
      * Construct a new ApiResponse instance
      * @param \Illuminate\Http\Request $request The current request instance
      * @param \League\Fractal\Manager $fractal A Fractal manager instance
      */
-    public function __construct(Request $request, Manager $fractal)
+    public function __construct(Manager $fractal, ParamsBag $paramsBag)
     {
-        $this->request = $request;
-        $this->fractal = $fractal;
-
-        $this->parseRequest();
-    }
-
-    /**
-     * Parse the request parameters
-     */
-    protected function parseRequest()
-    {
-        $this->page    = $this->getRequestParameterValue('page', 1);
-        $this->perPage = $this->getRequestParameterValue('per_page', 10);
-        $this->sort    = $this->getRequestParameterValue('sort', null);
-        $this->order   = $this->getRequestParameterValue('order', 'asc');
-        $this->search  = $this->getRequestParameterValue('search', null);
-        $this->include = $this->getRequestParameterValue('include', null);
+        $this->fractal   = $fractal;
+        $this->paramsBag = $paramsBag;
     }
 
     public function make($stuff, $transformer)
     {
-        return JsonResponse::create($this->makeArray($stuff, $transformer));
+        return JsonResponse::create($this->makeFractalArray($stuff, $transformer));
     }
 
     /**
      * Try to guess what to do with this stuff
      * @param  mixed $stuff       A Class, a Model instance or a Query Builder instance
      * @param  mixed $transformer The Fractal transformer to use
-     * @return array              [description]
+     * @return array              The genrated Api Response as an array
      */
-    public function makeArray($stuff, $transformer)
+    public function makeFractalArray($stuff, $transformer)
     {
+        // Make sure we have a Transformer instance
+        if (!$transformer instanceof TransformerAbstract && is_subclass_of($transformer, TransformerAbstract::class)) {
+            $transformer = new $transformer;
+        }
+
+        // Let's see which Strategy we're going to use depending on the input type
         if ($stuff instanceof Model) {
-            $data = $this->fromModelInstance($stuff, $transformer);
-        } elseif ($stuff instanceof Builder) {
-            $data = $this->fromQuery($stuff, $transformer);
+            // This is a single Model instance
+            $handler = new ItemStrategy($this->fractal, $transformer, $stuff);
         } elseif (is_subclass_of($stuff, Model::class)) {
-            $data = $this->fromModelClass($stuff, $transformer);
-        } elseif (method_exists($stuff, 'toArray')) {
-            $data = $stuff->toArray();
-        } else {
-            $data = array($stuff);
+            // This is a Eloquent Model class. Query the database for it's items
+            $handler = new ModelClassStrategy($this->fractal, $transformer, $stuff);
+        } elseif ($stuff instanceof Builder) {
+            // This is a Query Builder instance. Let's add our conditions on top of it
+            $handler = new EloquentQueryStrategy($this->fractal, $transformer, $stuff);
+        } elseif (is_subclass_of($stuff, EloquentCollection::class)) {
+            // This is a already loaded Collection. We can still filter it
+            $handler = new EloquentCollectionStrategy($this->fractal, $transformer, $stuff);
         }
 
-        return $data;
-    }
-
-    /**
-     * Transform and serialize multiple models from its class
-     * @param  mixed $model       An Eloquent Model class
-     * @param  mixed $transformer A Fractal Transformer class
-     * @return array              The transformed and serialized models collection
-     */
-    public function fromModelClass($model, $transformer)
-    {
-        if (is_subclass_of($model, Model::class)) {
-            return $this->fromQuery($model::query(), $transformer);
-        }
-    }
-
-    /**
-     * Transform and serialize a single model instance
-     * @param  Model $model       An Eloquent Model instance
-     * @param  mixed $transformer A Fractal Transformer class
-     * @return array              The transformed and serialized model
-     */
-    public function fromModelInstance($model, $transformer)
-    {
-        $resource = new Item($model, new $transformer);
-
-        if ($this->include != null) {
-            $this->fractal->parseIncludes($this->include);
+        // Now, let's execute our strategy, see their respective implementation
+        if ($handler instanceof FractalManagerContract) {
+            return $handler->execute($this->paramsBag);
         }
 
-        return $this->fractal->createData($resource)->toArray();
-    }
-
-    /**
-     * Transform and serialize the results of an Eloquent query
-     * @param  Builder $query       An Eloquent Query instance
-     * @param  mixed $transformer A Fractal Transformer class
-     * @return array              The transformed and serialized query results
-     */
-    public function fromQuery(Builder $query, $transformer)
-    {
-        if ($this->search != null && method_exists($query, 'search')) {
-            // apply search query
-            $query->search($this->search);
-        }
-
-        if ($this->sort != null) {
-            // apply sorting and ordering
-            $query->orderBy($this->sort, $this->order);
-        }
-
-        // paginate the results
-        $paginator = $query->paginate($this->perPage);
-
-        if ($this->include != null) {
-            $this->fractal->parseIncludes($this->include);
-        }
-
-        $resource = new Collection($paginator->getCollection(), new $transformer);
-        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-        return $this->fractal->createData($resource)->toArray();
-    }
-
-    /**
-     * Get the name of a request parameter from the user's configuration
-     * @param  String $key This parameter's key
-     * @return String      This parameter's name
-     */
-    private function getRequestParameterName($key)
-    {
-        return config('api-response.api.parameters.' . $key, $key);
-    }
-
-    /**
-     * Get the value of a request parameter
-     * @param  String $key    This parameter's key
-     * @param  mixed $default The default value to return
-     * @return mixed          This paramter's value
-     */
-    private function getRequestParameterValue($key, $default = null)
-    {
-        return $this->request->input($this->getRequestParameterName($key), $default);
+        // Why don't you give me something to work with?
+        return null;
     }
 
 }
