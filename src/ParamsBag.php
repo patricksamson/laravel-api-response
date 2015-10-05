@@ -8,14 +8,14 @@ class ParamsBag
 
     /**
      * The Request instance
-     * 
+     *
      * @var \Illuminate\Http\Request
      */
     protected $request;
 
     /**
      * Various request parameters
-     * 
+     *
      * @var String
      */
     protected $page;
@@ -47,7 +47,7 @@ class ParamsBag
 
     /**
      * Get the name of a request parameter from the user's configuration
-     * 
+     *
      * @param  String $key This parameter's key
      * @return String      This parameter's name
      */
@@ -58,7 +58,7 @@ class ParamsBag
 
     /**
      * Get the value of a request parameter
-     * 
+     *
      * @param  String $key    This parameter's key
      * @param  mixed $default The default value to return
      * @return mixed          This paramter's value
@@ -70,7 +70,7 @@ class ParamsBag
 
     /**
      * Get the Page parameter
-     * 
+     *
      * @return mixed
      */
     public function getPage()
@@ -80,7 +80,7 @@ class ParamsBag
 
     /**
      * Get the PerPage parameter
-     * 
+     *
      * @return mixed
      */
     public function getPerPage()
@@ -90,7 +90,7 @@ class ParamsBag
 
     /**
      * Get the Sort Column parameter
-     * 
+     *
      * @return mixed
      */
     public function getSortColumn()
@@ -100,7 +100,7 @@ class ParamsBag
 
     /**
      * Get the Sort Direction parameter
-     * 
+     *
      * @return mixed
      */
     public function getSortDirection()
@@ -110,7 +110,7 @@ class ParamsBag
 
     /**
      * Get the Search Query parameter
-     * 
+     *
      * @return mixed
      */
     public function getSearchQuery()
@@ -120,7 +120,7 @@ class ParamsBag
 
     /**
      * Get the Includes parameter
-     * 
+     *
      * @return mixed
      */
     public function getIncludes()

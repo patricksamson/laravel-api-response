@@ -49,7 +49,7 @@ class ApiResponse
      * Try to guess what to do with this stuff
      * @param  mixed $stuff       A Class, a Model instance or a Query Builder instance
      * @param  mixed $transformer The Fractal transformer to use
-     * @return array              The genrated Api Response as an array
+     * @return array              The generated Api Response as an array
      */
     public function makeFractalArray($stuff, $transformer)
     {
