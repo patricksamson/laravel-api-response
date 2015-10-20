@@ -68,7 +68,7 @@ class ApiResponse
         } elseif ($stuff instanceof Builder) {
             // This is a Query Builder instance. Let's add our conditions on top of it
             $handler = new EloquentQueryStrategy($this->fractal, $transformer, $stuff);
-        } elseif (is_subclass_of($stuff, EloquentCollection::class)) {
+        } elseif ($stuff instanceof EloquentCollection || is_subclass_of($stuff, EloquentCollection::class)) {
             // This is a already loaded Collection. We can still filter it
             $handler = new EloquentCollectionStrategy($this->fractal, $transformer, $stuff);
         }
