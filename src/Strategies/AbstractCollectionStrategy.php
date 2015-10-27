@@ -28,7 +28,7 @@ abstract class AbstractCollectionStrategy implements CollectionStrategyContract
 
     public function __construct(Manager $fractal, TransformerAbstract $transformer)
     {
-        $this->fractal     = $fractal;
+        $this->fractal = $fractal;
         $this->transformer = $transformer;
     }
 
@@ -89,10 +89,10 @@ abstract class AbstractCollectionStrategy implements CollectionStrategyContract
     public function execute(ParamsBag $params)
     {
         return $this->search($params->getSearchQuery())
-                    ->orderBy($params->getSortColumn(), $params->getSortDirection())
-                    ->paginate($params->getPerPage(), $params->getPage())
-                    ->includeRelated($params->getIncludes())
-                    ->compileFractalData();
+            ->orderBy($params->getSortColumn(), $params->getSortDirection())
+            ->paginate($params->getPerPage(), $params->getPage())
+            ->includeRelated($params->getIncludes())
+            ->compileFractalData();
     }
 
 }

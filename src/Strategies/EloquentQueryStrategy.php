@@ -2,9 +2,10 @@
 namespace Lykegenes\ApiResponse\Strategies;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\Paginator;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Collection as FractalCollection;
 use League\Fractal\TransformerAbstract;
 
 /**
@@ -25,6 +26,13 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
      * @var \League\Fractal\Pagination\IlluminatePaginatorAdapter
      */
     protected $paginator;
+
+    /**
+     * The Query results Collection
+     *
+     * @var \Illuminate\Support\Collection
+     */
+    protected $collection;
 
     public function __construct(Manager $fractal, TransformerAbstract $transformer, Builder $query)
     {
@@ -90,7 +98,13 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
     public function paginate($perPage, $page)
     {
         if ($perPage > 0) {
+            Paginator::currentPageResolver(function () use ($page) {
+                return $page;
+            });
+
             $this->paginator = $this->query->paginate($perPage);
+        } else {
+            $this->collection = $this->query->get();
         }
 
         return $this;
@@ -103,7 +117,12 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
      */
     public function getFractalCollection()
     {
-        return new Collection($this->paginator->getCollection(), $this->transformer);
+        if ($this->paginator) {
+            return new FractalCollection($this->paginator->getCollection(), $this->transformer);
+        } elseif ($this->collection) {
+            return new FractalCollection($this->collection, $this->transformer);
+        }
+
     }
 
     /**
@@ -114,7 +133,10 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
     public function compileFractalData()
     {
         $resource = $this->getFractalCollection();
-        $resource->setPaginator(new IlluminatePaginatorAdapter($this->paginator));
+
+        if ($this->paginator) {
+            $resource->setPaginator(new IlluminatePaginatorAdapter($this->paginator));
+        }
 
         return $this->fractal->createData($resource)->toArray();
     }

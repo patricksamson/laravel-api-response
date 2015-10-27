@@ -49,7 +49,7 @@ class ApiResponse
      * Try to guess what to do with this stuff
      * @param  mixed $stuff       A Class, a Model instance or a Query Builder instance
      * @param  mixed $transformer The Fractal transformer to use
-     * @return array              The genrated Api Response as an array
+     * @return array              The generated Api Response as an array
      */
     public function makeFractalArray($stuff, $transformer)
     {
@@ -68,7 +68,7 @@ class ApiResponse
         } elseif ($stuff instanceof Builder) {
             // This is a Query Builder instance. Let's add our conditions on top of it
             $handler = new EloquentQueryStrategy($this->fractal, $transformer, $stuff);
-        } elseif (is_subclass_of($stuff, EloquentCollection::class)) {
+        } elseif ($stuff instanceof EloquentCollection || is_subclass_of($stuff, EloquentCollection::class)) {
             // This is a already loaded Collection. We can still filter it
             $handler = new EloquentCollectionStrategy($this->fractal, $transformer, $stuff);
         }
