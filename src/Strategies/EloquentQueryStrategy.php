@@ -2,6 +2,7 @@
 namespace Lykegenes\ApiResponse\Strategies;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\Paginator;
 use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection as FractalCollection;
@@ -97,6 +98,10 @@ class EloquentQueryStrategy extends AbstractCollectionStrategy
     public function paginate($perPage, $page)
     {
         if ($perPage > 0) {
+            Paginator::currentPageResolver(function () use ($page) {
+                return $page;
+            });
+
             $this->paginator = $this->query->paginate($perPage);
         } else {
             $this->collection = $this->query->get();
