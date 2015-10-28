@@ -72,7 +72,7 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-packagist]: https://packagist.org/packages/lykegenes/laravel-api-response
 [link-travis]: https://travis-ci.org/Lykegenes/laravel-api-response
 [link-scrutinizer]: https://scrutinizer-ci.com/g/lykegenes/laravel-api-response/code-structure
-[link-codacy]: https://www.codacy.com/app/patricksamson236/laravel-api-response
+[link-codacy]: https://www.codacy.com/app/Lykegenes/laravel-api-response
 [link-downloads]: https://packagist.org/packages/lykegenes/laravel-api-response
 [link-author]: https://github.com/lykegenes
 [link-contributors]: ../../contributors
