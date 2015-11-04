@@ -3,8 +3,8 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Codacy Badge][ico-codacy]][link-codacy]
+[![Codacy Badge Grade][ico-codacy-grade]][link-codacy]
+[![Codacy Badge Coverage][ico-codacy-coverage]][link-codacy]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 A Laravel wrapper for thephpleague's Fractal package
@@ -65,13 +65,12 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-version]: https://img.shields.io/packagist/v/lykegenes/laravel-api-response.svg?style=flat-square
 [ico-license]: https://img.shields.io/packagist/l/lykegenes/laravel-api-response.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/Lykegenes/laravel-api-response/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/lykegenes/laravel-api-response.svg?style=flat-square
-[ico-codacy]: https://api.codacy.com/project/badge/f11463a6e4a848cb8696264d183ff784
+[ico-codacy-grade]: https://api.codacy.com/project/badge/grade/f11463a6e4a848cb8696264d183ff784
+[ico-codacy-coverage]: https://api.codacy.com/project/badge/coverage/f11463a6e4a848cb8696264d183ff784
 [ico-downloads]: https://img.shields.io/packagist/dt/lykegenes/laravel-api-response.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/lykegenes/laravel-api-response
 [link-travis]: https://travis-ci.org/Lykegenes/laravel-api-response
-[link-scrutinizer]: https://scrutinizer-ci.com/g/lykegenes/laravel-api-response/code-structure
 [link-codacy]: https://www.codacy.com/app/Lykegenes/laravel-api-response
 [link-downloads]: https://packagist.org/packages/lykegenes/laravel-api-response
 [link-author]: https://github.com/lykegenes
