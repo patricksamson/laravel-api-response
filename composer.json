@@ -1,5 +1,5 @@
 {
-    "name": "lykegenes/laravel-api-response",
+    "name": "patricksamson/laravel-api-response",
     "description": "A Laravel wrapper for thephpleague's Fractal package",
     "keywords": [
         "lykegenes",
@@ -8,26 +8,27 @@
         "laravel",
         "api"
     ],
-    "homepage": "https://github.com/lykegenes/laravel-api-response",
+    "homepage": "https://github.com/patricksamson/laravel-api-response",
     "license": "MIT",
     "authors": [
         {
             "name": "Patrick Samson",
             "email": "patricksamson236@gmail.com",
-            "homepage": "https://github.com/lykegenes",
+            "homepage": "https://github.com/patricksamson",
             "role": "Developer"
         }
     ],
     "require": {
-        "illuminate/support": "~5.1",
-        "illuminate/http": "~5.1",
-        "illuminate/database": "~5.1",
-        "league/fractal": "^0.12.0"
+		"php": "^7.3",
+        "illuminate/support": "^6.0",
+        "illuminate/http": "^6.0",
+        "illuminate/database": "^6.0",
+        "league/fractal": "^0.19"
     },
     "require-dev": {
-        "phpunit/phpunit" : "4.*",
-        "mockery/mockery": "0.9.*",
-        "orchestra/testbench": "~3.0",
+        "phpunit/phpunit" : "9.*",
+        "mockery/mockery": "1.*",
+        "orchestra/testbench": "~4.0",
         "codacy/coverage": "dev-master"
     },
     "autoload": {
@@ -45,7 +46,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.3-dev"
         }
     }
 }

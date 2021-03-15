@@ -45,12 +45,11 @@ abstract class ApiResponseTestCase extends TestCase
      */
     protected $transformer;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
         $this->request = $this->app['request'];
-        $this->request->setSession($this->app['session.store']);
         $this->config = include __DIR__ . '/../config/config.php';
 
         $this->fractal     = Mockery::mock(League\Fractal\Manager::class);
@@ -60,7 +59,7 @@ abstract class ApiResponseTestCase extends TestCase
         $this->apiResponse = new ApiResponse($this->fractal, $this->paramsBag);
     }
 
-    public function tearDown()
+    public function tearDown() : void
     {
         Mockery::close();
         $this->request     = null;
