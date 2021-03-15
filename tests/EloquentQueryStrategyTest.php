@@ -18,7 +18,7 @@ class EloquentQueryStrategyTest extends ApiResponseTestCase
      */
     protected $query;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 

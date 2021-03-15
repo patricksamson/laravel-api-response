@@ -6,7 +6,7 @@
 class ParamsBagTest extends ApiResponseTestCase
 {
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 

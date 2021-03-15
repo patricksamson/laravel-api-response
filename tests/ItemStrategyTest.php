@@ -18,7 +18,7 @@ class ItemStrategyTest extends ApiResponseTestCase
      */
     protected $model;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
